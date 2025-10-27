@@ -62,7 +62,7 @@ h6 {
 }
 
 .flash-red {
-  animation: flashRed 10s ease-in-out;
+  animation: flashRed 20s ease-in-out;
 }
 
 body {
@@ -118,6 +118,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .player-panel {
@@ -137,8 +138,11 @@ body {
 }
 
 .player-panel.active {
+  transform: scale(1.4);
+  transition: all 0.2s ease-in-out;
+  z-index: 99;
 }
-
+/*
 .player-0-panel.player-panel.active {
   box-shadow: 0px 0px 20px 0px red;
 }
@@ -146,18 +150,18 @@ body {
 .player-1-panel.player-panel.active {
   box-shadow: 0px 0px 20px 0px blue;
 }
-
+*/
 .dice-wrap.active {
   transform: scale(1.3);
   z-index: 99;
 }
 
 .dice-wrap-0.active {
-  box-shadow: 0px 0px 20px 0px red;
+  box-shadow: 0px 0px 20px 0px #eb4d4d;
 }
 
 .dice-wrap-1.active {
-  box-shadow: 0px 0px 20px 0px blue;
+  box-shadow: 0px 0px 20px 0px #4444ff;
 }
 
 .dice-wrap {
@@ -169,7 +173,7 @@ body {
 
 .message-container {
   margin-bottom: 20px;
-
+  border: 1px solid #a6a6a6;
   padding: 20px 49px;
   z-index: 99;
 }
@@ -232,7 +236,7 @@ body {
 }
 
 .btn-new {
-  background-color: green;
+  background-color: #2dc52d;
 }
 
 .btn-roll.player1-color,
@@ -242,7 +246,7 @@ body {
 
 .btn-roll.player2-color,
 .btn-hold.player2-color {
-  background-color: blue;
+  background-color: #4444ff;
 }
 
 .play-buttons-section {
@@ -273,7 +277,7 @@ input:disabled {
 #name-1,
 #current-1,
 #score-1 {
-  color: blue;
+  color: #4444ff;
 }
 
 #name-0,
@@ -314,11 +318,11 @@ input:disabled {
 }
 
 .blue {
-  color: blue;
+  color: #4444ff;
 }
 
 .green {
-  color: green;
+  color: #2dc52d;
   font-weight: bold;
   font-size: 38px;
 }
@@ -326,6 +330,11 @@ input:disabled {
 @media (max-width: 1052px) {
   .game-area {
     width: 100%;
+  }
+  .message {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
   }
 }
 
