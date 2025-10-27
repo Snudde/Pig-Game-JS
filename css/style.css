@@ -311,6 +311,7 @@ input:disabled {
 .score-message {
   text-align: center;
   font-size: 20px;
+  text-decoration: underline;
 }
 
 .red {
