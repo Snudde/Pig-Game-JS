@@ -1,0 +1,288 @@
+let player1CurrentScore = document.querySelector("#current-0");
+let player2CurrentScore = document.querySelector("#current-1");
+let player1TotalScore = document.querySelector("#score-0");
+let player2TotalScore = document.querySelector("#score-1");
+
+let player1Active = document.querySelector(".player-0-panel");
+let player2Active = document.querySelector(".player-1-panel");
+
+let player1DiceWrap = document.querySelector("#dice-1-wrap");
+let player2DiceWrap = document.querySelector("#dice-2-wrap");
+
+let player1DiceImg = document.querySelector("#dice-1");
+let player2DiceImg = document.querySelector("#dice-2");
+
+const hitDice = document.querySelector(".btn-roll");
+hitDice.addEventListener("click", rollDice);
+
+const newGameBtn = document.querySelector(".btn-new");
+newGameBtn.addEventListener("click", init);
+
+const holdBtn = document.querySelector(".btn-hold");
+holdBtn.addEventListener("click", holdScore);
+
+let targetScoreInput = document.querySelector("#winning-score-input");
+
+let message = document.querySelector(".message");
+let scoreMessage = document.querySelector(".score-message");
+
+let game = {
+  scores: [0, 0],
+  currentScore: 0,
+  activePlayer: 0,
+  playing: true,
+  targetScore: 100,
+  previousRoll: 0,
+};
+
+function init() {
+  message.innerHTML = `New game! <span class="red">Player 1</span>'s turn`;
+  scoreMessage.textContent = "Target score set to: " + game.targetScore;
+  targetScoreInput.disabled = false;
+  holdBtn.disabled = false;
+  hitDice.disabled = false;
+  let targetScoreValue = parseInt(targetScoreInput.value);
+  if (isNaN(targetScoreValue) || targetScoreValue <= 1) {
+    console.log("needs to be a number and above 1. Changed to default");
+    message.textContent =
+      "Score must be a number above 1. Changed to default (100)";
+    targetScoreValue = 100;
+    game.targetScore = targetScoreValue;
+    targetScoreInput.value = 100;
+  } else {
+    game.targetScore = targetScoreValue;
+    //message.textContent = "Target score set to: " + game.targetScore;
+    scoreMessage.textContent = "Target score set to: " + game.targetScore;
+  }
+  game = {
+    scores: [0, 0],
+    currentScore: 0,
+    activePlayer: 0,
+    playing: true,
+    targetScore: targetScoreValue,
+    previousRoll: 0,
+  };
+
+  console.log("Target score set to:", game.targetScore);
+
+  player1CurrentScore.textContent = game.currentScore;
+  player2CurrentScore.textContent = game.currentScore;
+  player1TotalScore.textContent = game.scores[0];
+  player2TotalScore.textContent = game.scores[1];
+
+  player1Active.classList.add("active");
+  player2Active.classList.remove("active");
+
+  player1DiceWrap.classList.add("active");
+  player1DiceWrap.classList.remove("inactive");
+  player2DiceWrap.classList.remove("active");
+  player2DiceWrap.classList.add("inactive");
+
+  hitDice.classList.add("player1-color");
+  hitDice.classList.remove("player2-color");
+  holdBtn.classList.add("player1-color");
+  holdBtn.classList.remove("player2-color");
+}
+
+function rollDice() {
+  targetScoreInput.disabled = true;
+
+  let result;
+  if (game.playing === true && game.activePlayer === 0) {
+    result = Math.floor(Math.random() * 6) + 1;
+    console.log(result);
+
+    player1DiceImg.src = `img/dice-${result}.png`;
+
+    if (result === 6 && game.previousRoll === 6) {
+      console.log(`Player 1 rolled 6 twice! Lose all points!`);
+      message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-6.png"> twice in a row! Lose all points! <span class="blue">Player 2</span>'s turn!`;
+      game.currentScore = 0;
+      game.scores[0] = 0;
+      player1CurrentScore.textContent = game.currentScore;
+      player1TotalScore.textContent = game.scores[0];
+
+      const gameArea = document.querySelector(".game-area");
+      gameArea.classList.add("shake");
+      gameArea.addEventListener(
+        "animationend",
+        () => {
+          gameArea.classList.remove("shake");
+        },
+        { once: true }
+      );
+
+      document.body.classList.add("flash-red");
+      document.body.addEventListener(
+        "animationend",
+        () => {
+          document.body.classList.remove("flash-red");
+        },
+        { once: true }
+      );
+
+      switchPlayer();
+      return;
+    }
+
+    if (result !== 1) {
+      game.currentScore += result;
+      console.log("current: " + game.currentScore);
+      player1CurrentScore.textContent = game.currentScore;
+    } else {
+      message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-1.png"> <span class="blue">Player 2</span>'s turn!`;
+      console.log("player 1 lost");
+      game.currentScore = 0;
+      player1CurrentScore.textContent = game.currentScore;
+      game.previousRoll = 0;
+      const gameArea = document.querySelector(".game-area");
+      gameArea.classList.add("shake");
+      gameArea.addEventListener(
+        "animationend",
+        () => {
+          gameArea.classList.remove("shake");
+        },
+        { once: true }
+      );
+      switchPlayer();
+    }
+  }
+
+  if (game.playing === true && game.activePlayer === 1) {
+    result = Math.floor(Math.random() * 6) + 1;
+    console.log(result);
+
+    player2DiceImg.src = `img/dice-${result}.png`;
+
+    if (result === 6 && game.previousRoll === 6) {
+      console.log(`Player 2 rolled 6 twice! Lose all points!`);
+      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-6.png"> twice in a row! Lose all points! <span class="red">Player 1</span>'s turn!`;
+      game.currentScore = 0;
+      game.scores[1] = 0;
+      player2CurrentScore.textContent = game.currentScore;
+      player2TotalScore.textContent = game.scores[1];
+
+      const gameArea = document.querySelector(".game-area");
+      gameArea.classList.add("shake");
+      gameArea.addEventListener(
+        "animationend",
+        () => {
+          gameArea.classList.remove("shake");
+        },
+        { once: true }
+      );
+
+      document.body.classList.add("flash-red");
+      document.body.addEventListener(
+        "animationend",
+        () => {
+          document.body.classList.remove("flash-red");
+        },
+        { once: true }
+      );
+
+      switchPlayer();
+      return;
+    }
+    console.log("Previous roll was:", game.previousRoll);
+    console.log(result);
+
+    if (result !== 1) {
+      game.currentScore += result;
+      console.log("current: " + game.currentScore);
+      player2CurrentScore.textContent = game.currentScore;
+    } else {
+      game.currentScore = 0;
+      player2CurrentScore.textContent = game.currentScore;
+      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1.png"> <span class="red">Player 1</span>'s turn!`;
+      game.previousRoll = 0;
+      const gameArea = document.querySelector(".game-area");
+      gameArea.classList.add("shake");
+      gameArea.addEventListener(
+        "animationend",
+        () => {
+          gameArea.classList.remove("shake");
+        },
+        { once: true }
+      );
+      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1.png"> <span class="red">Player 1</span>'s turn!`;
+      console.log("player 2 lost");
+      game.previousRoll = 0;
+      switchPlayer();
+    }
+  }
+  game.previousRoll = result;
+}
+
+function switchPlayer() {
+  console.log("switched!");
+  if (game.activePlayer === 0) {
+    game.activePlayer = 1;
+    player1DiceWrap.classList.remove("active");
+    player1DiceWrap.classList.add("inactive");
+    player2DiceWrap.classList.remove("inactive");
+    player2DiceWrap.classList.add("active");
+
+    player1Active.classList.remove("active");
+    player2Active.classList.add("active");
+    hitDice.classList.add("player2-color");
+    hitDice.classList.remove("player1-color");
+    holdBtn.classList.add("player2-color");
+    holdBtn.classList.remove("player1-color");
+  } else {
+    game.activePlayer = 0;
+    player2DiceWrap.classList.remove("active");
+    player2DiceWrap.classList.add("inactive");
+    player1DiceWrap.classList.remove("inactive");
+    player1DiceWrap.classList.add("active");
+
+    player2Active.classList.remove("active");
+    player1Active.classList.add("active");
+    hitDice.classList.add("player1-color");
+    hitDice.classList.remove("player2-color");
+    holdBtn.classList.add("player1-color");
+    holdBtn.classList.remove("player2-color");
+  }
+
+  game.previousRoll = 0;
+}
+
+function holdScore() {
+  if (!game.playing) return;
+  if (game.activePlayer === 0) {
+    game.scores[0] += game.currentScore;
+    player1TotalScore.textContent = game.scores[0];
+    if (game.scores[0] >= game.targetScore) {
+      console.log("player 1 won");
+      message.innerHTML = `<span class="red">Player 1</span> has reached the target score. <span class="green">WINNER</span>`;
+      game.playing = false;
+      holdBtn.disabled = true;
+      hitDice.disabled = true;
+    } else {
+      message.innerHTML = `<span class="red">Player 1</span> held their score. <span class="blue">Player 2</span>'s turn!`;
+      console.log("player 1 held their score");
+      switchPlayer();
+    }
+  } else if (game.activePlayer === 1) {
+    game.scores[1] += game.currentScore;
+    player2TotalScore.textContent = game.scores[1];
+    if (game.scores[1] >= game.targetScore) {
+      console.log("player 2 won");
+      message.innerHTML = `<span class="blue">Player 2</span> has reached the target score. <span class="green">WINNER</span>`;
+      game.playing = false;
+      holdBtn.disabled = true;
+      hitDice.disabled = true;
+    } else {
+      console.log("player 2 held their score");
+      message.innerHTML = `<span class="blue">Player 2</span> held their score. <span class="red">Player 1</span>'s turn!`;
+      switchPlayer();
+    }
+  }
+  game.currentScore = 0;
+  player1CurrentScore.textContent = 0;
+  player2CurrentScore.textContent = 0;
+}
+
+window.addEventListener("load", (event) => {
+  init();
+});
