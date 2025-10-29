@@ -3,8 +3,15 @@ let player2CurrentScore = document.querySelector("#current-1");
 let player1TotalScore = document.querySelector("#score-0");
 let player2TotalScore = document.querySelector("#score-1");
 
+let player1CurrentScoreMobile = document.querySelector("#current-0-m");
+let player2CurrentScoreMobile = document.querySelector("#current-1-m");
+let player1TotalScoreMobile = document.querySelector("#score-0-m");
+let player2TotalScoreMobile = document.querySelector("#score-1-m");
+
 let player1Active = document.querySelector(".player-0-panel");
 let player2Active = document.querySelector(".player-1-panel");
+let player1ActiveMobile = document.querySelector(".player-0-panel-m");
+let player2ActiveMobile = document.querySelector(".player-1-panel-m");
 
 let player1DiceWrap = document.querySelector("#dice-1-wrap");
 let player2DiceWrap = document.querySelector("#dice-2-wrap");
@@ -131,8 +138,15 @@ function init() {
   player1TotalScore.textContent = game.scores[0];
   player2TotalScore.textContent = game.scores[1];
 
+  player1CurrentScoreMobile.textContent = game.currentScore;
+  player2CurrentScoreMobile.textContent = game.currentScore;
+  player1TotalScoreMobile.textContent = game.scores[0];
+  player2TotalScoreMobile.textContent = game.scores[1];
+
   player1Active.classList.add("active");
+  player1ActiveMobile.classList.add("active");
   player2Active.classList.remove("active");
+  player2ActiveMobile.classList.remove("active");
 
   player1DiceWrap.classList.add("active");
   player1DiceWrap.classList.remove("inactive");
@@ -173,6 +187,8 @@ function rollDice() {
       game.scores[0] = 0;
       player1CurrentScore.textContent = game.currentScore;
       player1TotalScore.textContent = game.scores[0];
+      player1CurrentScoreMobile.textContent = game.currentScore;
+      player1TotalScoreMobile.textContent = game.scores[0];
 
       const gameArea = document.querySelector(".game-area");
       gameArea.classList.add("shake");
@@ -201,6 +217,7 @@ function rollDice() {
       game.currentScore += result;
       console.log("current: " + game.currentScore);
       player1CurrentScore.textContent = game.currentScore;
+      player1CurrentScoreMobile.textContent = game.currentScore;
     } else {
       message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-1.png"> <span class="blue">Player 2</span>'s turn!`;
 
@@ -208,6 +225,7 @@ function rollDice() {
       console.log("player 1 lost");
       game.currentScore = 0;
       player1CurrentScore.textContent = game.currentScore;
+      player1CurrentScoreMobile.textContent = game.currentScore;
       game.previousRoll = 0;
       const gameArea = document.querySelector(".game-area");
       gameArea.classList.add("shake");
@@ -237,6 +255,8 @@ function rollDice() {
       game.scores[1] = 0;
       player2CurrentScore.textContent = game.currentScore;
       player2TotalScore.textContent = game.scores[1];
+      player2CurrentScoreMobile.textContent = game.currentScore;
+      player2TotalScoreMobile.textContent = game.scores[1];
 
       const gameArea = document.querySelector(".game-area");
       gameArea.classList.add("shake");
@@ -267,10 +287,12 @@ function rollDice() {
       game.currentScore += result;
       console.log("current: " + game.currentScore);
       player2CurrentScore.textContent = game.currentScore;
+      player2CurrentScoreMobile.textContent = game.currentScore;
     } else {
       playSound(loseTurnSound);
       game.currentScore = 0;
       player2CurrentScore.textContent = game.currentScore;
+      player2CurrentScoreMobile.textContent = game.currentScore;
       message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1-b.png"> <span class="red">Player 1</span>'s turn!`;
       game.previousRoll = 0;
       const gameArea = document.querySelector(".game-area");
@@ -301,7 +323,9 @@ function switchPlayer() {
     player2DiceWrap.classList.add("active");
 
     player1Active.classList.remove("active");
+    player1ActiveMobile.classList.remove("active");
     player2Active.classList.add("active");
+    player2ActiveMobile.classList.add("active");
     hitDice.classList.add("player2-color");
     hitDice.classList.remove("player1-color");
     holdBtn.classList.add("player2-color");
@@ -314,7 +338,9 @@ function switchPlayer() {
     player1DiceWrap.classList.add("active");
 
     player2Active.classList.remove("active");
+    player2ActiveMobile.classList.remove("active");
     player1Active.classList.add("active");
+    player1ActiveMobile.classList.add("active");
     hitDice.classList.add("player1-color");
     hitDice.classList.remove("player2-color");
     holdBtn.classList.add("player1-color");
@@ -329,6 +355,7 @@ function holdScore() {
   if (game.activePlayer === 0) {
     game.scores[0] += game.currentScore;
     player1TotalScore.textContent = game.scores[0];
+    player1TotalScoreMobile.textContent = game.scores[0];
     if (game.scores[0] >= game.targetScore) {
       playSound(winSound);
       console.log("player 1 won");
@@ -350,6 +377,7 @@ function holdScore() {
   } else if (game.activePlayer === 1) {
     game.scores[1] += game.currentScore;
     player2TotalScore.textContent = game.scores[1];
+    player2TotalScoreMobile.textContent = game.scores[1];
     if (game.scores[1] >= game.targetScore) {
       playSound(winSound);
       console.log("player 2 won");
@@ -372,6 +400,8 @@ function holdScore() {
   game.currentScore = 0;
   player1CurrentScore.textContent = 0;
   player2CurrentScore.textContent = 0;
+  player1CurrentScoreMobile.textContent = 0;
+  player2CurrentScoreMobile.textContent = 0;
 }
 
 function showFloatingLabel(playerIndex, amount, isPositive) {
@@ -381,13 +411,14 @@ function showFloatingLabel(playerIndex, amount, isPositive) {
   label.classList.add(isPositive ? "positive" : "negative");
   label.textContent = isPositive ? `+${amount}` : `-${amount}`;
 
-  // Get the player's score area to position near it
-  const playerPanel = playerIndex === 0 ? player1Active : player2Active;
-  const rect = playerPanel.getBoundingClientRect();
+  // Get the DICE WRAP element instead of player panel
+  const diceWrap = playerIndex === 0 ? player1DiceWrap : player2DiceWrap;
+  const rect = diceWrap.getBoundingClientRect();
 
-  // Position the label
-  label.style.left = `${rect.left + rect.width / 2 - 30}px`; // Center horizontally
-  label.style.top = `${rect.top + 0}px`; // Position near current score
+  // Position in the CENTER of the dice
+  label.style.left = `${rect.left + rect.width / 2}px`; // Center of dice
+  label.style.top = `${rect.top + rect.height / 2}px`; // Middle of dice
+  label.style.transform = "translate(-50%, -50%)"; // Offset for label size
 
   // Add to page
   document.body.appendChild(label);
