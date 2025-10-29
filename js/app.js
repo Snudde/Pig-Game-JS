@@ -26,6 +26,28 @@ let targetScoreInput = document.querySelector("#winning-score-input");
 let message = document.querySelector(".message");
 let scoreMessage = document.querySelector(".score-message");
 
+const player1WinsDisplay = document.querySelector("#player1-wins");
+const player2WinsDisplay = document.querySelector("#player2-wins");
+const savedPlayer1Wins = parseInt(localStorage.getItem("player1Wins")) || 0;
+const savedPlayer2Wins = parseInt(localStorage.getItem("player2Wins")) || 0;
+
+const resetWinsBtn = document.querySelector("#reset-wins-btn");
+
+resetWinsBtn.addEventListener("click", function () {
+  // Reset in game state
+  game.wins = [0, 0];
+
+  // Update display
+  player1WinsDisplay.textContent = 0;
+  player2WinsDisplay.textContent = 0;
+
+  // Clear from localStorage
+  localStorage.removeItem("player1Wins");
+  localStorage.removeItem("player2Wins");
+
+  console.log("Win counters reset!");
+});
+
 ///////////SOUNDS////////////
 const loseTurnSound = new Audio("/sounds/dice-1.mp3");
 const doubleSixSound = new Audio("/sounds/dice-double6.wav");
@@ -57,6 +79,7 @@ let game = {
   targetScore: 100,
   previousRoll: 0,
   muted: false,
+  wins: [savedPlayer1Wins, savedPlayer2Wins],
 };
 
 function playSound(audioElement) {
@@ -86,7 +109,10 @@ function init() {
     //message.textContent = "Target score set to: " + game.targetScore;
     scoreMessage.innerHTML = `Target score set to: <span>${game.targetScore}</span>`;
   }
+
   let currentMuteState = game.muted;
+  let currentWins = game.wins;
+
   game = {
     scores: [0, 0],
     currentScore: 0,
@@ -95,6 +121,7 @@ function init() {
     targetScore: targetScoreValue,
     previousRoll: 0,
     muted: currentMuteState,
+    wins: currentWins,
   };
 
   console.log("Target score set to:", game.targetScore);
@@ -123,6 +150,8 @@ function init() {
   } else {
     muteBtn.textContent = "🔊";
   }
+
+  updateWinDisplay();
 }
 
 function rollDice() {
@@ -307,6 +336,10 @@ function holdScore() {
       game.playing = false;
       holdBtn.disabled = true;
       hitDice.disabled = true;
+      game.wins[0]++;
+      //player1WinsDisplay.textContent = game.wins[0];
+      updateWinDisplay();
+      localStorage.setItem("player1Wins", game.wins[0]);
     } else {
       message.innerHTML = `<span class="red">Player 1</span> held their score. <span class="blue">Player 2</span>'s turn!`;
       console.log("player 1 held their score");
@@ -324,6 +357,10 @@ function holdScore() {
       game.playing = false;
       holdBtn.disabled = true;
       hitDice.disabled = true;
+      game.wins[1]++;
+      //player2WinsDisplay.textContent = game.wins[1];
+      updateWinDisplay();
+      localStorage.setItem("player2Wins", game.wins[1]);
     } else {
       console.log("player 2 held their score");
       message.innerHTML = `<span class="blue">Player 2</span> held their score. <span class="red">Player 1</span>'s turn!`;
@@ -359,6 +396,21 @@ function showFloatingLabel(playerIndex, amount, isPositive) {
   setTimeout(() => {
     label.remove();
   }, 1000);
+}
+
+function updateWinDisplay() {
+  player1WinsDisplay.textContent = game.wins[0];
+  player2WinsDisplay.textContent = game.wins[1];
+
+  // Add crown to leader
+  if (game.wins[0] > game.wins[1]) {
+    player1WinsDisplay.innerHTML = `<span class="icon">👑</span> ${game.wins[0]}`;
+    player2WinsDisplay.textContent = game.wins[1];
+  } else if (game.wins[1] > game.wins[0]) {
+    player1WinsDisplay.textContent = game.wins[0];
+    player2WinsDisplay.innerHTML = `<span class="icon">👑</span> ${game.wins[1]}`;
+  }
+  // If tied, no crown
 }
 
 window.addEventListener("load", (event) => {

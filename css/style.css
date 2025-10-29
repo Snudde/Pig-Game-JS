@@ -75,6 +75,39 @@ body {
   font-family: "Oswald", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
+  color: #424242;
+}
+
+.stats-container {
+  max-width: 1050px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 50px;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.wins-display.blue {
+  border: 1px solid #567cfc;
+}
+
+.wins-display.red {
+  border: 1px solid #eb4d4d;
+}
+
+#reset-wins-btn {
+  border: none;
+  background-color: transparent;
+  border: 1px solid gray;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+#reset-wins-btn:hover {
+  transform: scale(1.1);
 }
 
 .game-area {
@@ -82,8 +115,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 1050px;
 
+  max-width: 1050px;
+  width: 100%;
   padding: 50px;
 
   border-radius: 25px;
@@ -154,6 +188,7 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  position: relative;
 }
 
 .player-panel {
@@ -174,7 +209,7 @@ body {
 
 .player-panel.active {
   transform: scale(1.4);
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
   z-index: 99;
 }
 /*
@@ -203,12 +238,10 @@ body {
   position: relative;
   display: inline-block;
   border-radius: 40px;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 .message-container {
-  margin-bottom: 20px;
-  border: 1px solid #a6a6a6;
   padding: 20px 49px;
   z-index: 99;
 }
@@ -374,6 +407,7 @@ input:disabled {
   justify-content: center;
   width: 100%;
   margin-top: 20px;
+  gap: 7px;
 }
 
 .btn-mute {
@@ -383,7 +417,7 @@ input:disabled {
   height: 50px;
   font-size: 30px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  transition: 0.1s ease-in-out;
   border: 1px solid #2dc52d;
 }
 
@@ -393,6 +427,48 @@ input:disabled {
 
 .btn-mute:hover {
   transform: scale(1.1);
+}
+
+.wins-display {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  text-align: center;
+  width: 128px;
+  position: relative;
+  padding: 20px;
+}
+
+.wins-label {
+  font-weight: normal;
+}
+
+.icon {
+  position: absolute;
+  top: -40px;
+  font-size: 30px;
+  left: 0;
+  right: 0;
+}
+
+#player1-wins,
+#player2-wins {
+  font-weight: bold;
+  color: #424242;
+  margin-left: 5px;
+}
+
+.pig-container {
+  /* Use relative path from this CSS file (css/) to the img/ folder in project root */
+  background-image: url("../img/pig.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 10px;
 }
 
 @media (max-width: 1052px) {
@@ -409,5 +485,26 @@ input:disabled {
 @media (max-width: 552px) {
   .player-stuff {
     gap: 15px;
+  }
+
+  .game-area {
+    padding: 30px;
+  }
+
+  .stats-container {
+    padding: 0 10px;
+  }
+
+  .wins-display {
+    padding: 10px;
+  }
+
+  .score-message {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .pig-container {
+    top: -100px;
   }
 }
