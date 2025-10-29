@@ -13,81 +13,82 @@
 </head>
 
 <body>
+  <div class="main-container">
+    <div class="stats-container">
+      <div class="wins-display red">
+        <span class="wins-label red">Wins:</span>
+        <span id="player1-wins">0</span>
+      </div>
+      <div class="pig-container"></div>
 
-  <div class="stats-container">
-    <div class="wins-display red">
-      <span class="wins-label red">Wins:</span>
-      <span id="player1-wins">0</span>
+      <div class="wins-display blue">
+        <span class="wins-label blue">Wins:</span>
+        <span id="player2-wins">0</span>
+      </div>
     </div>
-    <div class="pig-container"></div>
-
-    <div class="wins-display blue">
-      <span class="wins-label blue">Wins:</span>
-      <span id="player2-wins">0</span>
+    <p class="score-message"></p>
+    <div class="message-container">
+      <p class="message">Player 1 turn</p>
     </div>
-  </div>
-  <p class="score-message"></p>
-  <div class="message-container">
-    <p class="message">Player 1 turn</p>
-  </div>
 
 
-  <div class="game-area">
-    <div class="panel-section">
+    <div class="game-area">
+      <div class="panel-section">
 
-      <div class="player-0-panel player-panel active">
+        <div class="player-0-panel player-panel active">
 
-        <div class="player-name" id="name-0">Player 1</div>
-        <div class="player-total-label">Total Points</div>
-        <div class="player-score" id="score-0">0</div>
-        <div class="player-current-box">
-          <div class="player-current-label">Current points</div>
-          <div class="player-current-score" id="current-0">0</div>
+          <div class="player-name" id="name-0">Player 1</div>
+          <div class="player-total-label">Total Points</div>
+          <div class="player-score" id="score-0">0</div>
+          <div class="player-current-box">
+            <div class="player-current-label">Current points</div>
+            <div class="player-current-score" id="current-0">0</div>
+          </div>
+        </div>
+
+        <div class="player-1-panel player-panel">
+
+          <div class="player-name" id="name-1">Player 2</div>
+          <div class="player-total-label">Total Points</div>
+          <div class="player-score" id="score-1">0</div>
+          <div class="player-current-box">
+            <div class="player-current-label">Current Points</div>
+            <div class="player-current-score" id="current-1">0</div>
+          </div>
         </div>
       </div>
+      <div class="player-stuff">
 
-      <div class="player-1-panel player-panel">
-
-        <div class="player-name" id="name-1">Player 2</div>
-        <div class="player-total-label">Total Points</div>
-        <div class="player-score" id="score-1">0</div>
-        <div class="player-current-box">
-          <div class="player-current-label">Current Points</div>
-          <div class="player-current-score" id="current-1">0</div>
+        <div class="dice-wrap dice-wrap-0" id="dice-1-wrap">
+          <img src="img/dice-5.png" alt="Dice" class="dice" id="dice-1" />
         </div>
-      </div>
-    </div>
-    <div class="player-stuff">
+        <div class="dice-wrap dice-wrap-1" id="dice-2-wrap">
+          <img src="img/dice-5-b.png" alt="Dice" class="dice" id="dice-2" />
+        </div>
 
-      <div class="dice-wrap dice-wrap-0" id="dice-1-wrap">
-        <img src="img/dice-5.png" alt="Dice" class="dice" id="dice-1" />
-      </div>
-      <div class="dice-wrap dice-wrap-1" id="dice-2-wrap">
-        <img src="img/dice-5-b.png" alt="Dice" class="dice" id="dice-2" />
+
+
       </div>
 
+      <div class="play-buttons-section">
+        <button class="btn-roll"><i class="ion-ios-loop"></i> Roll</button>
+        <button class="btn-hold">
+          <i class="ion-ios-download-outline"></i> Hold
+        </button>
+      </div>
+      <div class="points-section"><button class="btn-new">
+          <i class="ion-ios-plus-outline"></i> New game
+        </button>
+        <input type="number" placeholder="Sätt vinstpoäng" class="final-score" id="winning-score-input" value="100"
+          min="1" />
+      </div>
+      <div class="sound-section">
+        <button class="btn-mute" id="mute-btn">🔊 Sound ON</button>
+        <button class="btn-reset-wins" id="reset-wins-btn">Reset Wins</button>
+      </div>
 
 
     </div>
-
-    <div class="play-buttons-section">
-      <button class="btn-roll"><i class="ion-ios-loop"></i> Roll</button>
-      <button class="btn-hold">
-        <i class="ion-ios-download-outline"></i> Hold
-      </button>
-    </div>
-    <div class="points-section"><button class="btn-new">
-        <i class="ion-ios-plus-outline"></i> New game
-      </button>
-      <input type="number" placeholder="Sätt vinstpoäng" class="final-score" id="winning-score-input" value="100"
-        min="1" />
-    </div>
-    <div class="sound-section">
-      <button class="btn-mute" id="mute-btn">🔊 Sound ON</button>
-      <button class="btn-reset-wins" id="reset-wins-btn">Reset Wins</button>
-    </div>
-
-
   </div>
 
   <script src="js/app.js"></script>
