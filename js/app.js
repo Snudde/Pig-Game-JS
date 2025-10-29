@@ -387,7 +387,7 @@ function showFloatingLabel(playerIndex, amount, isPositive) {
 
   // Position the label
   label.style.left = `${rect.left + rect.width / 2 - 30}px`; // Center horizontally
-  label.style.top = `${rect.top + 400}px`; // Position near current score
+  label.style.top = `${rect.top + 0}px`; // Position near current score
 
   // Add to page
   document.body.appendChild(label);

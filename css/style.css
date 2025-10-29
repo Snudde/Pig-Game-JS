@@ -203,7 +203,7 @@ body {
 .player-panel {
   flex: 1;
   text-align: center;
-  font-size: clamp(16px, 2vw, 20px);
+  font-size: clamp(16px, 2vw, 16px);
 }
 
 .player-stuff {
@@ -253,7 +253,10 @@ body {
 .message-container {
   z-index: 99;
   text-align: center;
-  margin-bottom: 70px;
+}
+
+.panel-section {
+  display: none;
 }
 
 .message-container img {
@@ -378,6 +381,7 @@ input:disabled {
 
 .message {
   font-size: clamp(24px, 4vw, 38px);
+  margin-bottom: 70px;
 }
 
 #score-1,
@@ -489,6 +493,22 @@ input:disabled {
     text-align: center;
     margin-bottom: 20px;
     font-size: 28px;
+  }
+  .panel-section {
+    display: flex;
+  }
+  .player-stuff .player-panel {
+    display: none;
+  }
+  .player-current-box {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .dice-wrap img {
+    border-radius: 25px;
+    width: 250px;
   }
 }
 
