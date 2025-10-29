@@ -30,6 +30,8 @@ let scoreMessage = document.querySelector(".score-message");
 const loseTurnSound = new Audio("/sounds/dice-1.mp3");
 const doubleSixSound = new Audio("/sounds/dice-double6.wav");
 const winSound = new Audio("/sounds/win.mp3");
+const newGameSound = new Audio("/sounds/new-game.wav");
+const pointSound = new Audio("/sounds/point.mp3");
 
 const muteBtn = document.querySelector("#mute-btn");
 
@@ -65,6 +67,7 @@ function playSound(audioElement) {
 }
 
 function init() {
+  playSound(newGameSound);
   message.innerHTML = `New game! <span class="red">Player 1</span>'s turn`;
   scoreMessage.innerHTML = `Target score set to: <span>${game.targetScore}</span>`;
   targetScoreInput.disabled = false;
@@ -136,6 +139,7 @@ function rollDice() {
       playSound(doubleSixSound);
       console.log(`Player 1 rolled 6 twice! Lose all points!`);
       message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-6.png"> twice in a row! Lose all points! <span class="blue">Player 2</span>'s turn!`;
+      showFloatingLabel(0, game.scores[0], false);
       game.currentScore = 0;
       game.scores[0] = 0;
       player1CurrentScore.textContent = game.currentScore;
@@ -170,6 +174,7 @@ function rollDice() {
       player1CurrentScore.textContent = game.currentScore;
     } else {
       message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-1.png"> <span class="blue">Player 2</span>'s turn!`;
+
       playSound(loseTurnSound);
       console.log("player 1 lost");
       game.currentScore = 0;
@@ -198,6 +203,7 @@ function rollDice() {
       playSound(doubleSixSound);
       console.log(`Player 2 rolled 6 twice! Lose all points!`);
       message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-6-b.png"> twice in a row! Lose all points! <span class="red">Player 1</span>'s turn!`;
+      showFloatingLabel(1, game.scores[1], false);
       game.currentScore = 0;
       game.scores[1] = 0;
       player2CurrentScore.textContent = game.currentScore;
@@ -304,6 +310,8 @@ function holdScore() {
     } else {
       message.innerHTML = `<span class="red">Player 1</span> held their score. <span class="blue">Player 2</span>'s turn!`;
       console.log("player 1 held their score");
+      playSound(pointSound);
+      showFloatingLabel(0, game.currentScore, true);
       switchPlayer();
     }
   } else if (game.activePlayer === 1) {
@@ -319,12 +327,38 @@ function holdScore() {
     } else {
       console.log("player 2 held their score");
       message.innerHTML = `<span class="blue">Player 2</span> held their score. <span class="red">Player 1</span>'s turn!`;
+      playSound(pointSound);
+      showFloatingLabel(1, game.currentScore, true);
       switchPlayer();
     }
   }
   game.currentScore = 0;
   player1CurrentScore.textContent = 0;
   player2CurrentScore.textContent = 0;
+}
+
+function showFloatingLabel(playerIndex, amount, isPositive) {
+  // Create the label element
+  const label = document.createElement("div");
+  label.classList.add("floating-label");
+  label.classList.add(isPositive ? "positive" : "negative");
+  label.textContent = isPositive ? `+${amount}` : `-${amount}`;
+
+  // Get the player's score area to position near it
+  const playerPanel = playerIndex === 0 ? player1Active : player2Active;
+  const rect = playerPanel.getBoundingClientRect();
+
+  // Position the label
+  label.style.left = `${rect.left + rect.width / 2 - 30}px`; // Center horizontally
+  label.style.top = `${rect.top + 400}px`; // Position near current score
+
+  // Add to page
+  document.body.appendChild(label);
+
+  // Remove after animation (1 second)
+  setTimeout(() => {
+    label.remove();
+  }, 1000);
 }
 
 window.addEventListener("load", (event) => {
