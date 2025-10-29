@@ -161,7 +161,7 @@ body {
 }
 
 .dice-wrap-1.active {
-  box-shadow: 0px 0px 20px 0px #4444ff;
+  box-shadow: 0px 0px 20px 0px #567cfc;
 }
 
 .dice-wrap {
@@ -246,7 +246,7 @@ body {
 
 .btn-roll.player2-color,
 .btn-hold.player2-color {
-  background-color: #4444ff;
+  background-color: #567cfc;
 }
 
 .play-buttons-section {
@@ -277,7 +277,7 @@ input:disabled {
 #name-1,
 #current-1,
 #score-1 {
-  color: #4444ff;
+  color: #567cfc;
 }
 
 #name-0,
@@ -319,7 +319,7 @@ input:disabled {
 }
 
 .blue {
-  color: #4444ff;
+  color: #567cfc;
 }
 
 .green {
@@ -349,11 +349,11 @@ input:disabled {
   font-size: 30px;
   cursor: pointer;
   transition: 0.2s ease-in-out;
-  border: 1px solid green;
+  border: 1px solid #2dc52d;
 }
 
 .btn-mute.muted {
-  border: 1px solid red;
+  border: 1px solid #eb4d4d;
 }
 
 .btn-mute:hover {
