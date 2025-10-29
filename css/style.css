@@ -78,14 +78,24 @@ body {
   color: #424242;
 }
 
-.stats-container {
+.main-container {
+  width: 90%;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+
+  flex-direction: column;
+
   max-width: 1050px;
+}
+
+.stats-container {
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 0 50px;
+  margin-top: 50px;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   position: relative;
 }
 
@@ -116,9 +126,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  max-width: 1050px;
   width: 100%;
-  padding: 50px;
 
   border-radius: 25px;
 }
@@ -187,7 +195,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 100px;
   position: relative;
 }
 
@@ -203,7 +211,7 @@ body {
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  margin: 70px 0;
+  margin-bottom: 100px;
   gap: 85px;
 }
 
@@ -242,8 +250,9 @@ body {
 }
 
 .message-container {
-  padding: 20px 49px;
   z-index: 99;
+  text-align: center;
+  margin-bottom: 70px;
 }
 
 .message-container img {
@@ -492,7 +501,7 @@ input:disabled {
   }
 
   .stats-container {
-    padding: 0 10px;
+    margin-top: 120px;
   }
 
   .wins-display {
@@ -506,5 +515,9 @@ input:disabled {
 
   .pig-container {
     top: -100px;
+  }
+
+  .player-panel {
+    font-size: 14px;
   }
 }
