@@ -328,6 +328,38 @@ input:disabled {
   font-size: 38px;
 }
 
+.score-message span {
+  font-weight: bold;
+  color: #2dc52d;
+}
+
+.sound-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-mute {
+  border: none;
+  background: transparent;
+  width: 50px;
+  height: 50px;
+  font-size: 30px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  border: 1px solid green;
+}
+
+.btn-mute.muted {
+  border: 1px solid red;
+}
+
+.btn-mute:hover {
+  transform: scale(1.1);
+}
+
 @media (max-width: 1052px) {
   .game-area {
     width: 100%;

@@ -26,6 +26,27 @@ let targetScoreInput = document.querySelector("#winning-score-input");
 let message = document.querySelector(".message");
 let scoreMessage = document.querySelector(".score-message");
 
+///////////SOUNDS////////////
+const loseTurnSound = new Audio("/sounds/dice-1.mp3");
+const doubleSixSound = new Audio("/sounds/dice-double6.wav");
+const winSound = new Audio("/sounds/win.mp3");
+
+const muteBtn = document.querySelector("#mute-btn");
+
+muteBtn.addEventListener("click", function () {
+  game.muted = !game.muted;
+
+  if (game.muted) {
+    muteBtn.textContent = "🔇";
+    muteBtn.classList.add("muted"); // Add CSS class
+  } else {
+    muteBtn.textContent = "🔊";
+    muteBtn.classList.remove("muted"); // Remove CSS class
+  }
+});
+
+/////////////////////////////////
+
 let game = {
   scores: [0, 0],
   currentScore: 0,
@@ -33,11 +54,19 @@ let game = {
   playing: true,
   targetScore: 100,
   previousRoll: 0,
+  muted: false,
 };
+
+function playSound(audioElement) {
+  if (!game.muted) {
+    audioElement.currentTime = 0;
+    audioElement.play();
+  }
+}
 
 function init() {
   message.innerHTML = `New game! <span class="red">Player 1</span>'s turn`;
-  scoreMessage.textContent = "Target score set to: " + game.targetScore;
+  scoreMessage.innerHTML = `Target score set to: <span>${game.targetScore}</span>`;
   targetScoreInput.disabled = false;
   holdBtn.disabled = false;
   hitDice.disabled = false;
@@ -52,8 +81,9 @@ function init() {
   } else {
     game.targetScore = targetScoreValue;
     //message.textContent = "Target score set to: " + game.targetScore;
-    scoreMessage.textContent = "Target score set to: " + game.targetScore;
+    scoreMessage.innerHTML = `Target score set to: <span>${game.targetScore}</span>`;
   }
+  let currentMuteState = game.muted;
   game = {
     scores: [0, 0],
     currentScore: 0,
@@ -61,6 +91,7 @@ function init() {
     playing: true,
     targetScore: targetScoreValue,
     previousRoll: 0,
+    muted: currentMuteState,
   };
 
   console.log("Target score set to:", game.targetScore);
@@ -82,6 +113,13 @@ function init() {
   hitDice.classList.remove("player2-color");
   holdBtn.classList.add("player1-color");
   holdBtn.classList.remove("player2-color");
+
+  const muteBtn = document.querySelector("#mute-btn");
+  if (game.muted) {
+    muteBtn.textContent = "🔇";
+  } else {
+    muteBtn.textContent = "🔊";
+  }
 }
 
 function rollDice() {
@@ -95,6 +133,7 @@ function rollDice() {
     player1DiceImg.src = `img/dice-${result}.png`;
 
     if (result === 6 && game.previousRoll === 6) {
+      playSound(doubleSixSound);
       console.log(`Player 1 rolled 6 twice! Lose all points!`);
       message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-6.png"> twice in a row! Lose all points! <span class="blue">Player 2</span>'s turn!`;
       game.currentScore = 0;
@@ -131,6 +170,7 @@ function rollDice() {
       player1CurrentScore.textContent = game.currentScore;
     } else {
       message.innerHTML = `<span class="red">Player 1</span> rolled <img src="/img/dice-1.png"> <span class="blue">Player 2</span>'s turn!`;
+      playSound(loseTurnSound);
       console.log("player 1 lost");
       game.currentScore = 0;
       player1CurrentScore.textContent = game.currentScore;
@@ -152,11 +192,12 @@ function rollDice() {
     result = Math.floor(Math.random() * 6) + 1;
     console.log(result);
 
-    player2DiceImg.src = `img/dice-${result}.png`;
+    player2DiceImg.src = `img/dice-${result}-b.png`;
 
     if (result === 6 && game.previousRoll === 6) {
+      playSound(doubleSixSound);
       console.log(`Player 2 rolled 6 twice! Lose all points!`);
-      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-6.png"> twice in a row! Lose all points! <span class="red">Player 1</span>'s turn!`;
+      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-6-b.png"> twice in a row! Lose all points! <span class="red">Player 1</span>'s turn!`;
       game.currentScore = 0;
       game.scores[1] = 0;
       player2CurrentScore.textContent = game.currentScore;
@@ -192,9 +233,10 @@ function rollDice() {
       console.log("current: " + game.currentScore);
       player2CurrentScore.textContent = game.currentScore;
     } else {
+      playSound(loseTurnSound);
       game.currentScore = 0;
       player2CurrentScore.textContent = game.currentScore;
-      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1.png"> <span class="red">Player 1</span>'s turn!`;
+      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1-b.png"> <span class="red">Player 1</span>'s turn!`;
       game.previousRoll = 0;
       const gameArea = document.querySelector(".game-area");
       gameArea.classList.add("shake");
@@ -205,7 +247,7 @@ function rollDice() {
         },
         { once: true }
       );
-      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1.png"> <span class="red">Player 1</span>'s turn!`;
+      message.innerHTML = `<span class="blue">Player 2</span> rolled <img src="/img/dice-1-b.png"> <span class="red">Player 1</span>'s turn!`;
       console.log("player 2 lost");
       game.previousRoll = 0;
       switchPlayer();
@@ -253,6 +295,7 @@ function holdScore() {
     game.scores[0] += game.currentScore;
     player1TotalScore.textContent = game.scores[0];
     if (game.scores[0] >= game.targetScore) {
+      playSound(winSound);
       console.log("player 1 won");
       message.innerHTML = `<span class="red">Player 1</span> has reached the target score. <span class="green">WINNER</span>`;
       game.playing = false;
@@ -267,6 +310,7 @@ function holdScore() {
     game.scores[1] += game.currentScore;
     player2TotalScore.textContent = game.scores[1];
     if (game.scores[1] >= game.targetScore) {
+      playSound(winSound);
       console.log("player 2 won");
       message.innerHTML = `<span class="blue">Player 2</span> has reached the target score. <span class="green">WINNER</span>`;
       game.playing = false;
