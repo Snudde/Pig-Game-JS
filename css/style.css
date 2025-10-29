@@ -533,6 +533,18 @@ input:disabled {
     margin-bottom: 3vh;
   }
 
+  .message {
+    font-size: clamp(24px, 4vw, 28px);
+  }
+
+  .player-current-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+
   .player-panel.active {
     transform: scale(1.2);
   }
@@ -553,5 +565,8 @@ input:disabled {
   .pig-container {
     width: 60px;
     height: 60px;
+  }
+  .player-panel {
+    font-size: clamp(16px, 2vw, 10px);
   }
 }
